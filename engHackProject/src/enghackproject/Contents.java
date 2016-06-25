@@ -60,12 +60,9 @@ public class Contents extends JPanel implements ActionListener {
         
         if(posY == 0) {
             speedY = 1;
-            ImageIcon ii = new ImageIcon(this.getClass().getResource("bird_flapping_lr.gif"));
-            bird = bird_left_to_right.getImage();
         }
         else if(posY == 350) {
             speedY = -1;
-            bird = bird_right_to_left.getImage();
         }
         repaint();
     }
