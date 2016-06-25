@@ -23,21 +23,25 @@ public class Contents extends JPanel implements ActionListener {
     
     private Image bird;
     private int posX = 50, posY = 50;
-    private int speedX = 1, speedY = 0;
+    private int speedX = 1, speedY = 1;
     private Timer timer;
     private ImageIcon bird_left_to_right = new ImageIcon(this.getClass().getResource("bird_flapping_lr.gif"));
     private ImageIcon bird_right_to_left = new ImageIcon(this.getClass().getResource("bird_flapping_rl.gif"));
     
     public Contents() {
         super.setDoubleBuffered(true);
-        timer = new Timer(16,this);
+        timer = new Timer(10,this);
         timer.start();
     }
     
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        bird = bird_left_to_right.getImage();
+        if(speedX > 0) {
+            bird = bird_left_to_right.getImage();
+        }else {
+            bird = bird_right_to_left.getImage();
+        }
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(bird, posX,posY, this);
     }
@@ -49,21 +53,18 @@ public class Contents extends JPanel implements ActionListener {
         
         if(posX == 0) {
             speedX = 1;
-            ImageIcon ii = new ImageIcon(this.getClass().getResource("bird_flapping_lr.gif"));
-            bird = bird_left_to_right.getImage();
         }
         else if(posX == 250) {
             speedX = -1;
-            bird = bird_right_to_left.getImage();
         }
         
         if(posY == 0) {
-            speedX = 1;
+            speedY = 1;
             ImageIcon ii = new ImageIcon(this.getClass().getResource("bird_flapping_lr.gif"));
             bird = bird_left_to_right.getImage();
         }
-        else if(posX == 350) {
-            speedX = -1;
+        else if(posY == 350) {
+            speedY = -1;
             bird = bird_right_to_left.getImage();
         }
         repaint();
