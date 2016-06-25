@@ -25,8 +25,8 @@ public class Contents extends JPanel implements ActionListener {
     private int posX = 50, posY = 50;
     private int speedX = 1, speedY = 1;
     private Timer timer;
-    private ImageIcon bird_left_to_right = new ImageIcon(this.getClass().getResource("bird_flapping_lr.gif"));
-    private ImageIcon bird_right_to_left = new ImageIcon(this.getClass().getResource("bird_flapping_rl.gif"));
+    private ImageIcon bird_left_to_right = new ImageIcon(this.getClass().getResource("stone.jpg"));
+    private ImageIcon bird_right_to_left = new ImageIcon(this.getClass().getResource("stone.jpg"));
     
     public Contents() {
         super.setDoubleBuffered(true);
