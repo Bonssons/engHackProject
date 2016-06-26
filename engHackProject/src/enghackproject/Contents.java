@@ -12,6 +12,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -22,8 +24,10 @@ import javax.swing.Timer;
  */
 public class Contents extends JPanel implements ActionListener {
     private Stone ston;
-    private Bird bird;
+    private ArrayList<Bird> birds;
+    private Gun slingshot;
     private Timer timer;
+    Random random = new Random();
 
     private Image stone;
     
@@ -34,7 +38,16 @@ public class Contents extends JPanel implements ActionListener {
         requestFocusInWindow();
         
         ston = new Stone(50,450);
-        bird = new Bird(0,50);
+        birds = new ArrayList<>();
+        int i;
+        for(i = 0; i < random.nextInt(10); i++){
+            birds.add(new Bird(random.nextInt(400),random.nextInt(300)));
+        }
+        birds.add(new Bird(0,50));
+        birds.add(new Bird(1,100));
+        birds.add(new Bird(0,150));
+        birds.add(new Bird(300,50));
+        slingshot = new Gun(250,540);
         timer = new Timer(10,this);
         timer.start();
         
@@ -48,26 +61,49 @@ public class Contents extends JPanel implements ActionListener {
         
         
         //g2d.drawImage(stone, posX,posY, this);
-        bird.draw(this, g2d);
+        for(Bird bird: birds) {
+            bird.draw(this, g2d);
+        }
         ston.draw(this, g2d);
+        slingshot.draw(this,g2d);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        bird.move();
+        for(Bird bird: birds){
+            bird.move();
+        }
         ston.move();
+        slingshot.move();
         repaint();
     }
 
         public void keyPressed(KeyEvent e) {
             
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            bird.die();
+            slingshot.fire();
+        }
+        
+        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            slingshot.updateDirection(KeyEvent.VK_LEFT);
+        }
+        
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            slingshot.updateDirection(KeyEvent.VK_RIGHT);
         }
     }
     
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+            slingshot.stop_firing();
+        }
+        
+        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            slingshot.updateDirection(0);
+        }
+        
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            slingshot.updateDirection(0);
         }
     }
 }
