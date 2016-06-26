@@ -68,6 +68,8 @@ public class Contents extends JPanel implements ActionListener {
         configJLabel(jlabel);
         configJLabel(jlabel2);
         jlabel2.setLocation(300, 300); 
+        wall1 = new Wall(-10,-10);
+        wall2 = new Wall(-10,-10);
        
         birds = new ArrayList<>();
         toBeBorn = new ArrayList<>();
@@ -242,6 +244,8 @@ public class Contents extends JPanel implements ActionListener {
             this.level = level;
             birdsToKill = 10;
             printer = "Level 1: Kill 10 birds. ";
+            wall1 = new Wall(-10,-10);
+            wall2 = new Wall(-10,-10);
         }else if(level == 2){
             birdsToKill = 14;
             printer = "Level 2: Kill 14 birds. ";
@@ -299,13 +303,13 @@ public class Contents extends JPanel implements ActionListener {
                 
                 if(compare(bullet_x-20,bullet_y,posw1_x,posw1_y,35,10)){
                     if(bullet.visible) {
-                        chances++;
+                        if (chances++ >= 3) chances = 3;
                     }
                     bullet.visible = false;
                 }
                 if(compare(bullet_x-20,bullet_y,posw2_x,posw2_y,35,10)){
                     if(bullet.visible) {
-                        chances++;
+                        if (chances++ >= 3) chances = 3;
                     }
                     bullet.visible = false;
                 }
