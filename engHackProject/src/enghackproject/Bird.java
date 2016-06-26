@@ -180,4 +180,8 @@ public class Bird {
     public static void resetBirdSpeed() {
         general_speed = 1;
     }
+    
+    public static int getGeneralSpeed(){
+        return general_speed;
+    }
 }

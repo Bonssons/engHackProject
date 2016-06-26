@@ -17,70 +17,44 @@ import java.util.ArrayList;
  *
  * @author shireen
  */
-public class Stone {
+public class Wall {
     
     //private boolean alive;
-    private int x, y, speed_x, speed_y, repeat;
-    int left;
+    private int x, y, speed_x, speed_y;
 
-    private Image stone;
-    private ImageIcon left_to_right = new ImageIcon(this.getClass().getResource("stone1.png"));
-    private ImageIcon right_to_left = new ImageIcon(this.getClass().getResource("stone1.png"));
+    private Image image;
+    private ImageIcon icon = new ImageIcon(this.getClass().getResource("wall.png"));
     
     static ArrayList<Bullet> bullet;
     
 
-    public Stone(int x, int y){
-        repeat = 0;
+    public Wall(int x, int y){
         this.x = x;
         this.y = y;
         
         speed_x = 1;
         speed_y = 0;
-        bullet = new ArrayList();
     }
     
     public void draw(JPanel jpanel, Graphics2D g2d) {
-        g2d.drawImage(stone, x,y, jpanel);    
+        g2d.drawImage(image, x,y, jpanel);    
         
     }
     
-    public void move(){
-        x += speed_x;
-        y += speed_y;
+    public void move(int movement){
+        x += speed_x*movement;
+        
         limits();
       
     }
     
     private void limits(){
         
-        if(x == 0) {
-            speed_x = 1;
+        if(x <= 0 || x >= 650) {
+            speed_x = -speed_x;
         }
-        else if(x == 350) {
-            speed_x = -1;
-        }
-
-        if(y == 0) {
-            speed_y = 1;
-        }
-        else if(y == 0) {
-            speed_y = -1;
-        }
-        if(x > 0) {
-            stone = left_to_right.getImage();
-        }else {
-            stone = right_to_left.getImage();
-        }
-    }
-    
-   
-    public static ArrayList getBullets(){
-        return bullet;
-    }
-    public void fire(){
-        Bullet b = new Bullet((x),(y),1);
-        bullet.add(b);
+        
+        image = icon.getImage();
     }
   
 
@@ -144,14 +118,14 @@ public class Stone {
      * @return the image
      */
     public Image getImage() {
-        return stone;
+        return image;
     }
 
     /**
      * @param image the image to set
      */
     public void setImage(Image image) {
-        this.stone = image;
+        this.image = image;
     }
     
     

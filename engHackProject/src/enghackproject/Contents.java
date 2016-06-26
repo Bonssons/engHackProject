@@ -33,13 +33,16 @@ public class Contents extends JPanel implements ActionListener {
     private ArrayList<Bird> birds;
     private Gun slingshot;
     private Timer timer;
+    private Wall wall1;
+    private Wall wall2;
     private int birdsKilled;
     private int birdsToKill;
     private int level;
     private boolean levelComplete;
     private String printer;
     private int score;
-    
+    private int chances;
+
     Random random = new Random();
     ArrayList<Bird> toBeBorn;
     JLabel jlabel;
@@ -59,6 +62,7 @@ public class Contents extends JPanel implements ActionListener {
         levelComplete = false;
         printer = "Level 1: Kill 10 birds. ";
         score = 0;
+        chances = 0;
         this.jlabel = new JLabel("");
         this.jlabel2 = new JLabel("");
         configJLabel(jlabel);
@@ -96,6 +100,11 @@ public class Contents extends JPanel implements ActionListener {
             bullet.draw(this,g2d);
         }
         
+        if(level > 1) {
+            wall1.draw(this,g2d);
+            wall2.draw(this,g2d);
+        }
+        
         printOnDisplay(jlabel2,"Score: " + ((Integer)score).toString());
         if(!printer.isEmpty()) {
             printOnDisplay(jlabel, printer);
@@ -127,6 +136,19 @@ public class Contents extends JPanel implements ActionListener {
         birds.addAll(toBeBorn);
         toBeBorn.clear();
         
+        if(level == 2){
+            wall1.move(0);
+            wall2.move(0);
+        }else if(level == 3){
+            wall1.move(Bird.getGeneralSpeed() - 1);
+            wall2.move(Bird.getGeneralSpeed() - 1);
+        }
+        
+        if(chances >= 3){
+            level = 10;
+            birdsKilled = birdsToKill;
+        }
+        
         if (birdsKilled == birdsToKill && !levelComplete) {
             levelComplete = true;
             birds.clear();
@@ -134,6 +156,8 @@ public class Contents extends JPanel implements ActionListener {
             printer = "Level " + this.level + ": Complete. Press N to next level.";
             if(level == 0){ 
                 printer = "Level Bonus: Complete. N/R to restart.";
+            }else if(level >= 10){
+                printer = "GAME OVER. Press R to restart.";
             }
         }
         repaint();
@@ -210,6 +234,9 @@ public class Contents extends JPanel implements ActionListener {
     }
     
     public void goToLevel(int level) {
+        Random random = new Random();
+        this.wall1 = new Wall(random.nextInt(400),random.nextInt(300));
+        this.wall2 = new Wall(random.nextInt(400),random.nextInt(300));
         if(level == 1){
             score = 0;
             this.level = level;
@@ -225,10 +252,14 @@ public class Contents extends JPanel implements ActionListener {
             printer = "Congratulations, you win! Bonus Level. ";
             birdsToKill = 100;
             this.level = 0;
+        }else if(level >= 10){
+            printer = "GAME OVER. R to restart.";
+            birdsToKill = -1;
         }else this.level = 0;
         birds = new ArrayList<>();
         toBeBorn = new ArrayList<>();
         birdsKilled = 0;
+        chances = 0;
         Bird.resetBirdSpeed();
         levelComplete = false;
         int i;
@@ -240,16 +271,16 @@ public class Contents extends JPanel implements ActionListener {
     }
     
     public void collision(){
-        
-        for(Bird bird: birds){
-            if(bird.isAlive()){
-                int bird_x = bird.getX();
-                int bird_y = bird.getY();
-                for(Bullet bullet: slingshot.getBullets()){
-                    int bullet_x = bullet.getX();
-                    int bullet_y = bullet.getY();
-                
-                    if(compare(bird_x,bird_y,bullet_x,bullet_y,25)){
+        for(Bullet bullet: slingshot.getBullets()){
+            int bullet_x = bullet.getX();
+            int bullet_y = bullet.getY();
+            
+            for(Bird bird: birds){
+                if(bird.isAlive()){
+                    int bird_x = bird.getX();
+                    int bird_y = bird.getY();
+                    
+                    if(compare(bird_x,bird_y,bullet_x,bullet_y,25,25)){
                         score++;
                         bird.die();
                         if(birdsKilled++ < birdsToKill/2){
@@ -259,12 +290,32 @@ public class Contents extends JPanel implements ActionListener {
                     }
                 }
             }
+            int i;
+            for(i = 0; i < 2; i++){
+                int posw1_x = wall1.getX();
+                int posw1_y = wall1.getY();
+                int posw2_x = wall2.getX();
+                int posw2_y = wall2.getY();
+                
+                if(compare(bullet_x-20,bullet_y,posw1_x,posw1_y,35,10)){
+                    if(bullet.visible) {
+                        chances++;
+                    }
+                    bullet.visible = false;
+                }
+                if(compare(bullet_x-20,bullet_y,posw2_x,posw2_y,35,10)){
+                    if(bullet.visible) {
+                        chances++;
+                    }
+                    bullet.visible = false;
+                }
+            }
         }
     }
     
-    public boolean compare(int x1, int y1, int x2, int y2, int range){
-        if ((x2 - x1) < range && (x2 - x1) > 0 ){
-            if ((y2 - y1) < range && (y2 - y1) > 0){
+    public boolean compare(int x1, int y1, int x2, int y2, int range_x, int range_y){
+        if ((x2 - x1) < range_x && (x2 - x1) > 0 ){
+            if ((y2 - y1) < range_y && (y2 - y1) > 0){
                 return true;
             }
         }
