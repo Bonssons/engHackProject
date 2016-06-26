@@ -59,7 +59,7 @@ public class Contents extends JPanel implements ActionListener {
         for(Bird bird: birds) {
             bird.draw(this, g2d);
         }
-        ston.draw(this, g2d);
+        //ston.draw(this, g2d);
         slingshot.draw(this,g2d);
         
         ArrayList bullets = Stone.getBullets();
@@ -101,10 +101,6 @@ public class Contents extends JPanel implements ActionListener {
         
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
             slingshot.updateDirection(KeyEvent.VK_RIGHT);
-        }
-        
-        if(e.getKeyCode() == KeyEvent.VK_UP) {
-            ston.fire();
         }
     }
     

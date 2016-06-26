@@ -5,11 +5,13 @@
  */
 package enghackproject;
 
+import static enghackproject.Stone.bullet;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 /**
  *
  * @author Rafael
@@ -17,6 +19,8 @@ import java.awt.event.KeyEvent;
 public class Gun {
     private int general_speed = 3;
     private int x, y, speed_x, speed_y;
+    private ArrayList<Bullet> bullets;
+    
     private Image image;
     private ImageIcon icon_still = new ImageIcon(this.getClass().getResource("slingshot.png"));
     private ImageIcon icon_fire = new ImageIcon(this.getClass().getResource("slingshot_fire.png"));
@@ -27,6 +31,7 @@ public class Gun {
         speed_x = 0;
         speed_y = 0;
         image = icon_still.getImage();
+        bullets = new ArrayList<>();
         //image.flush();
     }
     
@@ -35,6 +40,8 @@ public class Gun {
     }
     
     public void fire() {
+        Bullet b = new Bullet((x-10),(y-30));
+        bullet.add(b);
         image = icon_fire.getImage();
     }
     
@@ -133,5 +140,12 @@ public class Gun {
      */
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    /**
+     * @return the bullets
+     */
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
     }
 }
