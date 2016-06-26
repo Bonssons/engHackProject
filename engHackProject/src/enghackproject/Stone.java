@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,24 +21,33 @@ public class Stone {
     
     //private boolean alive;
     private int x, y, speed_x, speed_y, repeat;
-    boolean readyToFire, shot = false;
+    int left;
+       public static ArrayList<Bullet> bullets;
+
     private Image stone;
     private ImageIcon left_to_right = new ImageIcon(this.getClass().getResource("stone1.png"));
     private ImageIcon right_to_left = new ImageIcon(this.getClass().getResource("stone1.png"));
     
-    Rectangle bullet;
-    int bx, by;
+    static ArrayList bullet;
+    
+
     public Stone(int x, int y){
         repeat = 0;
         this.x = x;
         this.y = y;
+        
         speed_x = 1;
         speed_y = 0;
+        bullet = new ArrayList();
     }
     
+    public void run(){
+        bullets = new ArrayList<Bullet>();
+    }
     
     public void draw(JPanel jpanel, Graphics2D g2d) {
-        g2d.drawImage(stone, x,y, jpanel);        
+        g2d.drawImage(stone, x,y, jpanel);    
+        
     }
     
     public void move(){
@@ -69,22 +79,15 @@ public class Stone {
         }
     }
     
-    public void keyPressed(KeyEvent e){
-        int keyCode = e.getKeyCode();
-        if(keyCode == e.VK_LEFT){
-            setX(-1);
-        }
-        if(keyCode == e.VK_RIGHT){
-            setX(1);
-        }
-        if(keyCode == e.VK_SPACE){
-            if(bullet == null)
-                readyToFire = true;
-            if(readyToFire){
-                
-            }
-        }
+   
+    public static ArrayList getBullets(){
+        return bullet;
     }
+    public void fire(){
+        Bullet b = new Bullet((left+60),(y+154/2));
+        bullet.add(b);
+    }
+  
 
     /**
      * @return the x
@@ -156,4 +159,6 @@ public class Stone {
         this.stone = image;
     }
     
-}
+    
+    }
+
