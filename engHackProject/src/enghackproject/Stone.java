@@ -26,7 +26,7 @@ public class Stone {
     private ImageIcon right_to_left = new ImageIcon(this.getClass().getResource("stone1.png"));
     
     Rectangle bullet;
-    
+    int bx, by;
     public Stone(int x, int y){
         repeat = 0;
         this.x = x;
@@ -70,7 +70,20 @@ public class Stone {
     }
     
     public void keyPressed(KeyEvent e){
-        
+        int keyCode = e.getKeyCode();
+        if(keyCode == e.VK_LEFT){
+            setX(-1);
+        }
+        if(keyCode == e.VK_RIGHT){
+            setX(1);
+        }
+        if(keyCode == e.VK_SPACE){
+            if(bullet == null)
+                readyToFire = true;
+            if(readyToFire){
+                
+            }
+        }
     }
 
     /**
