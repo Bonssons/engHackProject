@@ -22,13 +22,12 @@ public class Stone {
     //private boolean alive;
     private int x, y, speed_x, speed_y, repeat;
     int left;
-       public static ArrayList<Bullet> bullets;
 
     private Image stone;
     private ImageIcon left_to_right = new ImageIcon(this.getClass().getResource("stone1.png"));
     private ImageIcon right_to_left = new ImageIcon(this.getClass().getResource("stone1.png"));
     
-    static ArrayList bullet;
+    static ArrayList<Bullet> bullet;
     
 
     public Stone(int x, int y){
@@ -39,10 +38,6 @@ public class Stone {
         speed_x = 1;
         speed_y = 0;
         bullet = new ArrayList();
-    }
-    
-    public void run(){
-        bullets = new ArrayList<Bullet>();
     }
     
     public void draw(JPanel jpanel, Graphics2D g2d) {

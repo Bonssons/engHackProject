@@ -39,6 +39,4 @@ public class Bullet {
         if(x>500)
             visible=false;
     }
-    
-    
 }
