@@ -7,8 +7,11 @@ package enghackproject;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -45,6 +48,7 @@ public class Contents extends JPanel implements ActionListener {
             stone = right_to_left.getImage();
         }
         
+        g2d.drawImage(stone, posX,posY, this);
         bird.draw(this, g2d);
     }
 
