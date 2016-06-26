@@ -88,6 +88,7 @@ public class Contents extends JPanel implements ActionListener {
                 slingshot.fire();
                 slingshot.setFiring(true);
             }
+            slingshot.FireCount();
         }
         
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {

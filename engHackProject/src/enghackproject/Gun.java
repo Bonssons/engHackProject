@@ -20,6 +20,7 @@ public class Gun {
     private int x, y, speed_x, speed_y;
     private ArrayList<Bullet> bullets;
     private boolean firing;
+    private int fireCount;
     
     private Image image;
     private ImageIcon icon_still = new ImageIcon(this.getClass().getResource("slingshot.png"));
@@ -33,10 +34,18 @@ public class Gun {
         image = icon_still.getImage();
         bullets = new ArrayList<>();
         firing = false;
+        fireCount = 0;
     }
     
     public void stop_firing() {
         image = icon_still.getImage();
+        fireCount = 0;
+    }
+    
+    public void FireCount() {
+        if (!(fireCount++ < 2)){
+            stop_firing();
+        }
     }
     
     public void fire() {
