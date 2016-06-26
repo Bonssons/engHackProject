@@ -76,8 +76,8 @@ public class Gun {
         if(x <= 0) {
             x = 1;
         }
-        else if(x >= 451) {
-            x = 450;
+        else if(x >= 651) {
+            x = 650;
         }
     }
 
@@ -170,5 +170,9 @@ public class Gun {
      */
     public void setFiring(boolean firing) {
         this.firing = firing;
+    }
+    
+    public void removeBullet(Bullet bullet){
+        if(bullets.contains(bullet)) bullets.remove(bullet);
     }
 }

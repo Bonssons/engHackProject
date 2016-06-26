@@ -62,29 +62,33 @@ public class Contents extends JPanel implements ActionListener {
 
         slingshot.draw(this,g2d);
         
-        ArrayList bullets = slingshot.getBullets();
-        for(int z=0;z<bullets.size();z++){
-            Bullet m = (Bullet) bullets.get(z);
-            g2d.drawImage(m.getImage(),m.getX(),m.getY(),null);
+        ArrayList<Bullet> bullets = slingshot.getBullets();
+        for(Bullet bullet: bullets){
+            bullet.draw(this,g2d);
         }
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ArrayList bullets = slingshot.getBullets();
-        for(int z=0;z<bullets.size();z++){
-            Bullet m = (Bullet) bullets.get(z);
-            if(m.getVisible()==true)
-            m.move();
-            else
-                bullets.remove(z);
+        ArrayList<Bullet> bullets = slingshot.getBullets();
+        ArrayList<Bullet> toRemove = new ArrayList<>();
+        for(Bullet bullet: bullets){
+            if(bullet.getVisible())
+                bullet.move();
+            else {
+                toRemove.add(bullet);
+            }
         }
         
         for(Bird bird: birds){
             bird.move();
         }
         slingshot.move();
+        
+        collision();
+        bullets.removeAll(toRemove);
+        toRemove.clear();
         repaint();
     }
 
@@ -122,5 +126,34 @@ public class Contents extends JPanel implements ActionListener {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
             slingshot.updateDirection(0);
         }
+    }
+    
+    public void collision(){
+        
+        for(Bird bird: birds){
+            if(bird.isAlive()){
+                int bird_x = bird.getX();
+                int bird_y = bird.getY();
+                for(Bullet bullet: slingshot.getBullets()){
+                    int bullet_x = bullet.getX();
+                    int bullet_y = bullet.getY();
+                
+                    if(compare(bird_x,bird_y,bullet_x,bullet_y)){
+                        bird.die();
+                        bullet.visible = false;
+                    }
+                }
+            }
+        }
+    }
+    
+    public boolean compare(int x1, int y1, int x2, int y2){
+        int range = 25;
+        if ((x2 - x1) < range && (x2 - x1) > 0 ){
+            if ((y2 - y1) < range && (y2 - y1) > 0){
+                return true;
+            }
+        }
+        return false;
     }
 }

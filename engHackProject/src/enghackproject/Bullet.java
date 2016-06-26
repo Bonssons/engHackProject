@@ -6,6 +6,7 @@
 package enghackproject;
 import java.awt.*;
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 /**
  *
  * @author shireen
@@ -22,6 +23,9 @@ public class Bullet {
         img = newBullet.getImage();
         visible = true;
     }
+    public void draw(JPanel jpanel, Graphics2D g2d){
+        g2d.drawImage(img,x,y,jpanel);
+    }
     public int getX(){
         return x;
     }
@@ -36,7 +40,7 @@ public class Bullet {
     }
     public void move(){
         y=y-2;
-        if(x>500)
+        if(x>500 || y < 0)
             visible=false;
     }
 }

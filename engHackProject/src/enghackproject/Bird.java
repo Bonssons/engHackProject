@@ -53,7 +53,7 @@ public class Bird {
     }
      
    private void resetAnimation() {
-       if(alive) {
+       if(isAlive()) {
             if (repeat++ == 48) {
                 repeat = 0;
                 image.flush();
@@ -63,7 +63,7 @@ public class Bird {
     
     private void changeImage() {
         if(speed_x > 0) {
-            if (alive) {
+            if (isAlive()) {
                 image = lr.getImage();
                 goingRight = true;
             }else {
@@ -71,7 +71,7 @@ public class Bird {
                 speed_x = 0;
             }
         }else if (speed_x < 0){
-            if (alive) {
+            if (isAlive()) {
                 image = rl.getImage();
                 goingRight = false;
             }else {
@@ -85,7 +85,7 @@ public class Bird {
         if(x == 0) {
             speed_x = 1;
         }
-        else if(x == 450) {
+        else if(x == 650) {
             speed_x = -1;
         }
 
@@ -165,5 +165,12 @@ public class Bird {
      */
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    /**
+     * @return the alive
+     */
+    public boolean isAlive() {
+        return alive;
     }
 }
