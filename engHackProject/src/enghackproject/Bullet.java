@@ -42,7 +42,7 @@ public class Bullet {
     }
     public void move(){
         y=y-general_speed;
-        if(x>500 || y < 0)
+        if(y < 0)
             visible=false;
     }
 }

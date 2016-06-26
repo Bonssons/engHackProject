@@ -176,4 +176,8 @@ public class Bird {
     public boolean isAlive() {
         return alive;
     }
+    
+    public static void resetBirdSpeed() {
+        general_speed = 1;
+    }
 }

@@ -13,6 +13,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import static java.lang.System.exit;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -35,6 +36,7 @@ public class Contents extends JPanel implements ActionListener {
     private int birdsKilled;
     Random random = new Random();
     ArrayList<Bird> toBeBorn;
+    JLabel jlabel;
 
     Image imag;
     private Image stone;
@@ -45,6 +47,9 @@ public class Contents extends JPanel implements ActionListener {
         setFocusable(true);
         imag = background.getImage();
         requestFocusInWindow();
+        
+        jlabel = new JLabel("YOU WIN! Press r to reset");
+        jlabel.setFont(new Font("Verdana",1,20));
         
         birds = new ArrayList<>();
         toBeBorn = new ArrayList<>();
@@ -106,8 +111,7 @@ public class Contents extends JPanel implements ActionListener {
         if (birdsKilled == 10) {
             birds.clear();
             bullets.clear();
-            JLabel jlabel = new JLabel("YOU WIN!");
-            jlabel.setFont(new Font("Verdana",1,20));
+            
             this.add(jlabel);
             this.setBorder(new LineBorder(Color.BLACK)); // make it easy to see
        }
@@ -171,6 +175,28 @@ public class Contents extends JPanel implements ActionListener {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
             queue.add(-KeyEvent.VK_RIGHT);
         }
+        if(e.getKeyCode() == KeyEvent.VK_R) {
+            this.reset();
+        }
+        if(e.getKeyCode() == KeyEvent.VK_Q) {
+            exit(0);
+        }
+    }
+    
+    public void reset() {
+        birds = new ArrayList<>();
+        toBeBorn = new ArrayList<>();
+        birdsKilled = 0;
+        Bird.resetBirdSpeed();
+        int i;
+        for(i = 0; i < 5; i++){
+            birds.add(new Bird(random.nextInt(400),random.nextInt(300)));
+        }
+        slingshot = new Gun(250,360);
+        
+        queue = new ArrayBlockingQueue<>(100);
+        
+        this.remove(jlabel);
     }
     
     public void collision(){
