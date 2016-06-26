@@ -39,13 +39,9 @@ public class Contents extends JPanel implements ActionListener {
         ston = new Stone(50,450);
         birds = new ArrayList<>();
         int i;
-        for(i = 0; i < random.nextInt(10); i++){
+        for(i = 0; i < random.nextInt(10)+2; i++){
             birds.add(new Bird(random.nextInt(400),random.nextInt(300)));
         }
-        birds.add(new Bird(0,50));
-        birds.add(new Bird(1,100));
-        birds.add(new Bird(0,150));
-        birds.add(new Bird(300,50));
         slingshot = new Gun(250,540);
         timer = new Timer(10,this);
         timer.start();
