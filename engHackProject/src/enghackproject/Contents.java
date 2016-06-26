@@ -105,7 +105,7 @@ public class Contents extends JPanel implements ActionListener {
             wall2.draw(this,g2d);
         }
         
-        printOnDisplay(jlabel2,"Score: " + ((Integer)score).toString());
+        printOnDisplay(jlabel2,"Score: " + ((Integer)score).toString() + ", Wall Hits: " + (3 - chances));
         if(!printer.isEmpty()) {
             printOnDisplay(jlabel, printer);
         }else{
