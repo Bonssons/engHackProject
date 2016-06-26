@@ -38,10 +38,13 @@ public class Contents extends JPanel implements ActionListener {
     private int level;
     private boolean levelComplete;
     private String printer;
+    private int score;
+    
     Random random = new Random();
     ArrayList<Bird> toBeBorn;
     JLabel jlabel;
-
+    JLabel jlabel2;
+    
     Image imag;
     private ImageIcon background = new ImageIcon(this.getClass().getResource("background.png"));
     
@@ -54,8 +57,14 @@ public class Contents extends JPanel implements ActionListener {
         level = 1;
         birdsToKill = 10;
         levelComplete = false;
-        printer = "Level 1: Kill 10 birds";
-        
+        printer = "Level 1: Kill 10 birds. ";
+        score = 0;
+        this.jlabel = new JLabel("");
+        this.jlabel2 = new JLabel("");
+        configJLabel(jlabel);
+        configJLabel(jlabel2);
+        jlabel2.setLocation(300, 300); 
+       
         birds = new ArrayList<>();
         toBeBorn = new ArrayList<>();
         birdsKilled = 0;
@@ -87,11 +96,10 @@ public class Contents extends JPanel implements ActionListener {
             bullet.draw(this,g2d);
         }
         
+        printOnDisplay(jlabel2,"Score: " + ((Integer)score).toString());
         if(!printer.isEmpty()) {
-            System.out.println(printer);
-            if(jlabel != null) printClear();
-            printOnDisplay(printer);
-            printer = "";
+            printOnDisplay(jlabel, printer);
+        }else{
         }
     }
 
@@ -124,6 +132,9 @@ public class Contents extends JPanel implements ActionListener {
             birds.clear();
             bullets.clear();
             printer = "Level " + this.level + ": Complete. Press N to next level.";
+            if(level == 0){ 
+                printer = "Level Bonus: Complete. N/R to restart.";
+            }
         }
         repaint();
     }
@@ -131,8 +142,6 @@ public class Contents extends JPanel implements ActionListener {
     public void manageKeys() {
         if(queue.peek() != null){
             int key = queue.poll();
-            printClear();
-        
             switch(key){
                 case KeyEvent.VK_SPACE:
                     slingshot.increaseBulletSpeed();
@@ -202,17 +211,18 @@ public class Contents extends JPanel implements ActionListener {
     
     public void goToLevel(int level) {
         if(level == 1){
+            score = 0;
             this.level = level;
             birdsToKill = 10;
-            printer = "Level 1: Kill 10 Birds";
+            printer = "Level 1: Kill 10 birds. ";
         }else if(level == 2){
             birdsToKill = 14;
-            printer = "Level 2: Kill 14 Birds";
+            printer = "Level 2: Kill 14 birds. ";
         }else if(level == 3){
             birdsToKill = 20;
-            printer = "Level 3: Kill 20 Birds";
+            printer = "Level 3: Kill 20 birds. ";
         }else if(level == 4){
-            printer = "CONGRATULATIONS YOU WIN: BONUS LEVEL";
+            printer = "Congratulations, you win! Bonus Level. ";
             birdsToKill = 100;
             this.level = 0;
         }else this.level = 0;
@@ -240,6 +250,7 @@ public class Contents extends JPanel implements ActionListener {
                     int bullet_y = bullet.getY();
                 
                     if(compare(bird_x,bird_y,bullet_x,bullet_y,25)){
+                        score++;
                         bird.die();
                         if(birdsKilled++ < birdsToKill/2){
                             toBeBorn.add(new Bird(0,random.nextInt(300)));
@@ -260,15 +271,18 @@ public class Contents extends JPanel implements ActionListener {
         return false;
     }
     
-    public void printOnDisplay(String s) {
-        this.jlabel = new JLabel(s);
-        this.jlabel.setFont(new Font("Verdana",1,30));
-        this.add(jlabel);
-        this.setBorder(new LineBorder(Color.BLACK)); // make it easy to see
+    public void printOnDisplay(JLabel jlabel, String s) {
+        jlabel.setText(s);
     }
     
     public void printClear() {
         this.remove(jlabel);
+    }
+    
+    public void configJLabel(JLabel jlabel){
+        jlabel.setFont(new Font("Verdana",1,30));
+        this.add(jlabel);
+        this.setBorder(new LineBorder(Color.BLACK)); // make it easy to see
     }
 
 }
