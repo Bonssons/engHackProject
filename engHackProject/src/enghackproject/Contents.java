@@ -45,6 +45,7 @@ public class Contents extends JPanel implements ActionListener {
     private String printer;
     private int score;
     private int chances;
+    private int maximumTime;
     
     private int second;
     java.util.Timer time;
@@ -93,6 +94,7 @@ public class Contents extends JPanel implements ActionListener {
         birds = new ArrayList<>();
         toBeBorn = new ArrayList<>();
         birdsKilled = 0;
+        maximumTime = 60;
         int i;
         for(i = 0; i < birdsToKill/2; i++){
             birds.add(new Bird(random.nextInt(400),random.nextInt(300)));
@@ -127,7 +129,7 @@ public class Contents extends JPanel implements ActionListener {
             wall2.draw(this,g2d);
         }
         
-        printOnDisplay(jlabel2,"Score: " + ((Integer)score).toString() + ", Wall Hits: " + (3 - chances) + ", time:" + (60 - second));
+        printOnDisplay(jlabel2,"Score: " + ((Integer)score).toString() + ", Wall Hits: " + (3 - chances) + ", time:" + (maximumTime - second));
         if(!printer.isEmpty()) {
             printOnDisplay(jlabel, printer);
         }else{
@@ -169,7 +171,7 @@ public class Contents extends JPanel implements ActionListener {
             wall2.move(Bird.getGeneralSpeed() - 1);
         }
         
-        if(chances >= 3 || second > 60){
+        if(chances >= 3 || second > maximumTime){
             level = 10;
             birdsKilled = birdsToKill;
         }
@@ -268,6 +270,7 @@ public class Contents extends JPanel implements ActionListener {
         this.wall1 = new Wall(random.nextInt(400),random.nextInt(300));
         this.wall2 = new Wall(random.nextInt(400),random.nextInt(300));
         if(level == 1){
+            maximumTime = 60;
             score = 0;
             this.level = level;
             birdsToKill = 10;
@@ -275,9 +278,11 @@ public class Contents extends JPanel implements ActionListener {
             wall1 = new Wall(-10,-10);
             wall2 = new Wall(-10,-10);
         }else if(level == 2){
+            maximumTime = 40;
             birdsToKill = 14;
             printer = "Level 2: Kill 14 birds. ";
         }else if(level == 3){
+            maximumTime = 20;
             birdsToKill = 20;
             printer = "Level 3: Kill 20 birds. ";
         }else if(level == 4){
