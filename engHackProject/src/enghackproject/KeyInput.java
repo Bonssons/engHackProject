@@ -20,16 +20,14 @@ public class KeyInput extends KeyAdapter{
         this.contents = contents;
     }
     
+    @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            System.out.println("SPACE PRESSED LOL");
-            contents.keyPressed(e);
-        }
+        System.out.println("KEY PRESSED LOL");
+        contents.keyPressed(e);
     }
     
+    @Override
     public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            contents.keyReleased(e);
-        }
+        contents.keyReleased(e);
     }
 }

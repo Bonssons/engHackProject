@@ -35,7 +35,7 @@ public class Bird {
     public void die() {
         alive = false;
         speed_x = 0;
-        speed_y = 1;
+        speed_y = 2;
     }
     
     
@@ -75,16 +75,16 @@ public class Bird {
         if(x == 0) {
             speed_x = 1;
         }
-        else if(x == 250) {
+        else if(x == 450) {
             speed_x = -1;
         }
 
         if(y == 0) {
             speed_y = 1;
         }
-        else if(y == 350) {
-            speed_y = -1;
-        }        
+//      else if(y == 550) {
+//          speed_y = -1;
+//      }        
     }
 
     /**

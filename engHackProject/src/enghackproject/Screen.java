@@ -14,10 +14,10 @@ import javax.swing.JFrame;
 class Screen extends JFrame{
     
     public void Init(){
+        super.add(new Contents());
         super.setTitle("Bird Hunt");
         super.setSize(500,600);
         super.setResizable(false);
-        super.add(new Contents());
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setVisible(true);
     }

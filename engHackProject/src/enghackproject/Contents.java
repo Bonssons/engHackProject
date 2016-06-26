@@ -32,7 +32,13 @@ public class Contents extends JPanel implements ActionListener {
     
     public Contents() {
         super.setDoubleBuffered(true);
+        addKeyListener(new KeyInput(this));
+        setFocusable(true);
+        requestFocusInWindow();
+        
         bird = new Bird();
+        
+        
         timer = new Timer(10,this);
         timer.start();
     }
@@ -68,15 +74,15 @@ public class Contents extends JPanel implements ActionListener {
         repaint();
     }
 
-        public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            System.out.println("SPACE PRESSED LOL");
             bird.die();
         }
     }
     
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+            bird.die();
         }
     }
 }
