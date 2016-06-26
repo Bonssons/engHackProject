@@ -5,7 +5,6 @@
  */
 package enghackproject;
 
-import static enghackproject.Stone.bullet;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -20,6 +19,8 @@ public class Gun {
     private int general_speed = 3;
     private int x, y, speed_x, speed_y;
     private ArrayList<Bullet> bullets;
+    private boolean firing;
+    private int fireCount;
     
     private Image image;
     private ImageIcon icon_still = new ImageIcon(this.getClass().getResource("slingshot.png"));
@@ -32,16 +33,24 @@ public class Gun {
         speed_y = 0;
         image = icon_still.getImage();
         bullets = new ArrayList<>();
-        //image.flush();
+        firing = false;
+        fireCount = 0;
     }
     
     public void stop_firing() {
         image = icon_still.getImage();
+        fireCount = 0;
+    }
+    
+    public void FireCount() {
+        if (!(fireCount++ < 2)){
+            stop_firing();
+        }
     }
     
     public void fire() {
         Bullet b = new Bullet((x-10),(y-30));
-        bullet.add(b);
+        bullets.add(b);
         image = icon_fire.getImage();
     }
     
@@ -147,5 +156,19 @@ public class Gun {
      */
     public ArrayList<Bullet> getBullets() {
         return bullets;
+    }
+
+    /**
+     * @return the firing
+     */
+    public boolean isFiring() {
+        return firing;
+    }
+
+    /**
+     * @param firing the firing to set
+     */
+    public void setFiring(boolean firing) {
+        this.firing = firing;
     }
 }

@@ -16,7 +16,7 @@ class Screen extends JFrame{
     public void Init(){
         super.add(new Contents());
         super.setTitle("Bird Hunt");
-        super.setSize(500,600);
+        super.setSize(700,430);
         super.setResizable(false);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setVisible(true);

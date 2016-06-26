@@ -22,7 +22,7 @@ import javax.swing.Timer;
  * @author Rafael
  */
 public class Contents extends JPanel implements ActionListener {
-    private Stone ston;
+
     private ArrayList<Bird> birds;
     private Gun slingshot;
     private Timer timer;
@@ -38,7 +38,6 @@ public class Contents extends JPanel implements ActionListener {
         imag = background.getImage();
         requestFocusInWindow();
         
-        ston = new Stone(50,450);
         birds = new ArrayList<>();
         int i;
         for(i = 0; i < random.nextInt(10)+2; i++){
@@ -48,9 +47,7 @@ public class Contents extends JPanel implements ActionListener {
         timer = new Timer(10,this);
         timer.start();
         
-        
-        
-        
+        timer.start();   
     }
     
     @Override
@@ -59,15 +56,14 @@ public class Contents extends JPanel implements ActionListener {
         Graphics2D g2d = (Graphics2D) g;
 
         g.drawImage(imag, 0, 0, null);
-        
-        //g2d.drawImage(stone, posX,posY, this);
+
         for(Bird bird: birds) {
             bird.draw(this, g2d);
         }
-        //ston.draw(this, g2d);
+
         slingshot.draw(this,g2d);
         
-        ArrayList bullets = Stone.getBullets();
+        ArrayList bullets = slingshot.getBullets();
         for(int z=0;z<bullets.size();z++){
             Bullet m = (Bullet) bullets.get(z);
             g2d.drawImage(m.getImage(),m.getX(),m.getY(),null);
@@ -77,7 +73,7 @@ public class Contents extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ArrayList bullets = Stone.getBullets();
+        ArrayList bullets = slingshot.getBullets();
         for(int z=0;z<bullets.size();z++){
             Bullet m = (Bullet) bullets.get(z);
             if(m.getVisible()==true)
@@ -89,7 +85,6 @@ public class Contents extends JPanel implements ActionListener {
         for(Bird bird: birds){
             bird.move();
         }
-        ston.move();
         slingshot.move();
         repaint();
     }
@@ -97,7 +92,11 @@ public class Contents extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            slingshot.fire();
+            if(!slingshot.isFiring()){
+                slingshot.fire();
+                slingshot.setFiring(true);
+            }
+            slingshot.FireCount();
         }
         
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -111,7 +110,10 @@ public class Contents extends JPanel implements ActionListener {
     
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            slingshot.stop_firing();
+            if(slingshot.isFiring()){
+                slingshot.stop_firing();
+                slingshot.setFiring(false);
+            }
         }
         
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {
