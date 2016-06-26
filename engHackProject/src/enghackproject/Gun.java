@@ -49,7 +49,7 @@ public class Gun {
     }
     
     public void fire() {
-        Bullet b = new Bullet((x-10),(y-30));
+        Bullet b = new Bullet((x+3),(y-5));
         bullets.add(b);
         image = icon_fire.getImage();
     }
