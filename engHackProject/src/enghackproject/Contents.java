@@ -27,13 +27,15 @@ public class Contents extends JPanel implements ActionListener {
     private Gun slingshot;
     private Timer timer;
     Random random = new Random();
-
+    Image imag;
     private Image stone;
+    private ImageIcon background = new ImageIcon(this.getClass().getResource("background.png"));
     
     public Contents() {
         super.setDoubleBuffered(true);
         addKeyListener(new KeyInput(this));
         setFocusable(true);
+        imag = background.getImage();
         requestFocusInWindow();
         
         ston = new Stone(50,450);
@@ -42,9 +44,12 @@ public class Contents extends JPanel implements ActionListener {
         for(i = 0; i < random.nextInt(10)+2; i++){
             birds.add(new Bird(random.nextInt(400),random.nextInt(300)));
         }
-        slingshot = new Gun(250,540);
+        slingshot = new Gun(250,360);
         timer = new Timer(10,this);
         timer.start();
+        
+        
+        
         
     }
     
@@ -53,7 +58,7 @@ public class Contents extends JPanel implements ActionListener {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        
+        g.drawImage(imag, 0, 0, null);
         
         //g2d.drawImage(stone, posX,posY, this);
         for(Bird bird: birds) {

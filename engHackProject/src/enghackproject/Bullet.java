@@ -18,7 +18,7 @@ public class Bullet {
     public Bullet(int startX, int startY){
         x=startX;
         y=startY;
-        ImageIcon newBullet = new ImageIcon("bullet1.png");
+        ImageIcon newBullet = new ImageIcon("bullet2.png");
         img = newBullet.getImage();
         visible = true;
     }
@@ -26,7 +26,7 @@ public class Bullet {
         return x;
     }
     public int getY(){
-        return y;
+        return y;    
     }
     public boolean getVisible(){
         return visible;

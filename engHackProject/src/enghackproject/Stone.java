@@ -84,7 +84,7 @@ public class Stone {
         return bullet;
     }
     public void fire(){
-        Bullet b = new Bullet((left+60),(y+154/2));
+        Bullet b = new Bullet((x),(y));
         bullet.add(b);
     }
   
