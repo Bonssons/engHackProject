@@ -36,7 +36,7 @@ public class Contents extends JPanel implements ActionListener {
         setFocusable(true);
         requestFocusInWindow();
         
-        bird = new Bird();
+        bird = new Bird(50,0);
         
         
         timer = new Timer(10,this);

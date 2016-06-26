@@ -23,12 +23,12 @@ public class Bird {
     private ImageIcon dlr = new ImageIcon(this.getClass().getResource("bird_dying_lr.gif"));
     private ImageIcon drl = new ImageIcon(this.getClass().getResource("bird_dying_rl.gif"));
     
-    public Bird(){
+    public Bird(int x, int y){
         alive = true;
         goingRight = true;
         repeat = 0;
-        x = 0;
-        y = 50;
+        this.x = x;
+        this.y = y;
         speed_x = 1;
         speed_y = 0;
     }
@@ -89,9 +89,9 @@ public class Bird {
             speed_x = -1;
         }
 
-        if(y == 0) {
-            speed_y = 1;
-        }
+//      if(y == 0) {
+//          speed_y = 1;
+//      }
 //      else if(y == 550) {
 //          speed_y = -1;
 //      }        
