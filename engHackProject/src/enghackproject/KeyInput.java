@@ -22,7 +22,6 @@ public class KeyInput extends KeyAdapter{
     
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("KEY PRESSED LOL");
         contents.keyPressed(e);
     }
     

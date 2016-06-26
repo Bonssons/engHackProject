@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -23,10 +23,13 @@ import javax.swing.Timer;
  */
 public class Contents extends JPanel implements ActionListener {
     private Stone ston;
-    private Bird bird;
+    private ArrayList<Bird> birds;
+    private Gun slingshot;
     private Timer timer;
+    Random random = new Random();
 
     private Image stone;
+    
     public Contents() {
         super.setDoubleBuffered(true);
         addKeyListener(new KeyInput(this));
@@ -34,7 +37,16 @@ public class Contents extends JPanel implements ActionListener {
         requestFocusInWindow();
         
         ston = new Stone(50,450);
-        bird = new Bird(0,50);
+        birds = new ArrayList<>();
+        int i;
+        for(i = 0; i < random.nextInt(10); i++){
+            birds.add(new Bird(random.nextInt(400),random.nextInt(300)));
+        }
+        birds.add(new Bird(0,50));
+        birds.add(new Bird(1,100));
+        birds.add(new Bird(0,150));
+        birds.add(new Bird(300,50));
+        slingshot = new Gun(250,540);
         timer = new Timer(10,this);
         timer.start();
         
@@ -48,13 +60,18 @@ public class Contents extends JPanel implements ActionListener {
         
         
         //g2d.drawImage(stone, posX,posY, this);
-        bird.draw(this, g2d);
+        for(Bird bird: birds) {
+            bird.draw(this, g2d);
+        }
         ston.draw(this, g2d);
+        slingshot.draw(this,g2d);
+        
         ArrayList bullets = Stone.getBullets();
         for(int z=0;z<bullets.size();z++){
             Bullet m = (Bullet) bullets.get(z);
             g2d.drawImage(m.getImage(),m.getX(),m.getY(),null);
         }
+
     }
 
     @Override
@@ -67,24 +84,45 @@ public class Contents extends JPanel implements ActionListener {
             else
                 bullets.remove(z);
         }
-        bird.move();
-        ston.move();
-        repaint();
         
+        for(Bird bird: birds){
+            bird.move();
+        }
+        ston.move();
+        slingshot.move();
+        repaint();
     }
 
         public void keyPressed(KeyEvent e) {
             
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            bird.die();
+            slingshot.fire();
         }
-        if(e.getKeyCode() == KeyEvent.VK_UP){
-            ston.fire();
+        
+        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            slingshot.updateDirection(KeyEvent.VK_LEFT);
+        }
+        
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            slingshot.updateDirection(KeyEvent.VK_RIGHT);
+        }
+        
+        if(e.getKeyCode() == KeyEvent.VK_UP) {
+            
         }
     }
     
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+            slingshot.stop_firing();
+        }
+        
+        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            slingshot.updateDirection(0);
+        }
+        
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            slingshot.updateDirection(0);
         }
     }
 }
