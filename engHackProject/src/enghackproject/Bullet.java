@@ -20,7 +20,7 @@ public class Bullet {
     public Bullet(int startX, int startY, int general_speed){
         x=startX;
         y=startY;
-        ImageIcon newBullet = new ImageIcon("bullet2.png");
+        ImageIcon newBullet = new ImageIcon("stone.png");
         img = newBullet.getImage();
         visible = true;
         this.general_speed = general_speed;
