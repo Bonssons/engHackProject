@@ -26,12 +26,13 @@ public class Contents extends JPanel implements ActionListener {
     private Timer timer;
 
     private Image stone;
-    private int posX = 0, posY = 0;
-    private int speedX = 1, speedY = 1;
-    
     
     public Contents() {
         super.setDoubleBuffered(true);
+        addKeyListener(new KeyInput(this));
+        setFocusable(true);
+        requestFocusInWindow();
+        
         ston = new Stone(50,450);
         bird = new Bird(0,50);
         timer = new Timer(10,this);
@@ -61,7 +62,6 @@ public class Contents extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
             
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            System.out.println("SPACE PRESSED LOL");
             bird.die();
         }
     }
