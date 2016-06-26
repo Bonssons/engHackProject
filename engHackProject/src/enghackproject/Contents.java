@@ -82,7 +82,6 @@ public class Contents extends JPanel implements ActionListener {
     
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            bird.die();
         }
     }
 }

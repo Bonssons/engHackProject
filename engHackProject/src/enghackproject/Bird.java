@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  * @author Rafael
  */
 public class Bird {
-    private boolean alive;
+    private boolean alive, goingRight;
     private int x, y, speed_x, speed_y, repeat;
     private Image image;
     private ImageIcon lr = new ImageIcon(this.getClass().getResource("bird_flapping_lr.gif"));
@@ -25,6 +25,7 @@ public class Bird {
     
     public Bird(){
         alive = true;
+        goingRight = true;
         repeat = 0;
         x = 0;
         y = 50;
@@ -34,13 +35,13 @@ public class Bird {
     
     public void die() {
         alive = false;
-        speed_x = 0;
-        speed_y = 2;
+        //speed_x = 0;
+        speed_y = 5;
     }
     
     
     public void draw(JPanel jpanel, Graphics2D g2d) {
-        g2d.drawImage(image, x,y, jpanel);        
+        g2d.drawImage(image, x,y, jpanel);      
     }
     
     public void move(){
@@ -52,22 +53,31 @@ public class Bird {
     }
      
    private void resetAnimation() {
-        if (repeat++ > 50) {
-            repeat = 0;
-            //y++;
-            if(image.equals(lr.getImage()))
-                lr.getImage().flush();
-            else rl.getImage().flush();
+       if(alive) {
+            if (repeat++ == 48) {
+                repeat = 0;
+                image.flush();
+            }
         }
     }
     
     private void changeImage() {
         if(speed_x > 0) {
-            if (alive) image = lr.getImage();
-            else image = dlr.getImage();
-        }else {
-            if (alive) image = rl.getImage();
-            else image = drl.getImage();
+            if (alive) {
+                image = lr.getImage();
+                goingRight = true;
+            }else {
+                image = dlr.getImage();
+                speed_x = 0;
+            }
+        }else if (speed_x < 0){
+            if (alive) {
+                image = rl.getImage();
+                goingRight = false;
+            }else {
+                image = drl.getImage();       
+                speed_x = 0;
+            }
         }
     }
     
