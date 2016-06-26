@@ -27,13 +27,10 @@ public class Contents extends JPanel implements ActionListener {
     private Gun slingshot;
     private Timer timer;
     Random random = new Random();
-<<<<<<< HEAD
+
     Image imag;
     private Image stone;
     private ImageIcon background = new ImageIcon(this.getClass().getResource("background.png"));
-=======
->>>>>>> 5a5fe7b9a123fb84b966e0a55e2cd94e8c2e1fda
-    
     public Contents() {
         super.setDoubleBuffered(true);
         addKeyListener(new KeyInput(this));
@@ -48,11 +45,8 @@ public class Contents extends JPanel implements ActionListener {
         }
         slingshot = new Gun(250,360);
         timer = new Timer(10,this);
-<<<<<<< HEAD
         timer.start();
         
-=======
->>>>>>> 5a5fe7b9a123fb84b966e0a55e2cd94e8c2e1fda
         timer.start();   
     }
     
@@ -61,11 +55,7 @@ public class Contents extends JPanel implements ActionListener {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-<<<<<<< HEAD
         g.drawImage(imag, 0, 0, null);
-
-=======
->>>>>>> 5a5fe7b9a123fb84b966e0a55e2cd94e8c2e1fda
         for(Bird bird: birds) {
             bird.draw(this, g2d);
         }
