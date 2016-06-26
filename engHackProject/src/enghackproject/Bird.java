@@ -15,17 +15,27 @@ import javax.swing.JPanel;
  * @author Rafael
  */
 public class Bird {
+    private boolean alive;
     private int x, y, speed_x, speed_y, repeat;
     private Image image;
-    private ImageIcon bird_lr = new ImageIcon(this.getClass().getResource("bird_flapping_lr.gif"));
-    private ImageIcon bird_rl = new ImageIcon(this.getClass().getResource("bird_flapping_rl.gif"));
+    private ImageIcon lr = new ImageIcon(this.getClass().getResource("bird_flapping_lr.gif"));
+    private ImageIcon rl = new ImageIcon(this.getClass().getResource("bird_flapping_rl.gif"));
+    private ImageIcon dlr = new ImageIcon(this.getClass().getResource("bird_dying_lr.gif"));
+    private ImageIcon drl = new ImageIcon(this.getClass().getResource("bird_dying_rl.gif"));
     
     public Bird(){
-    repeat = 0;
-    x = 0;
-    y = 50;
-    speed_x = 1;
-    speed_y = 0;
+        alive = true;
+        repeat = 0;
+        x = 0;
+        y = 50;
+        speed_x = 1;
+        speed_y = 0;
+    }
+    
+    public void die() {
+        alive = false;
+        speed_x = 0;
+        speed_y = 1;
     }
     
     
@@ -35,26 +45,29 @@ public class Bird {
     
     public void move(){
         x += speed_x;
+        y += speed_y;
         resetAnimation();
         changeImage();
         limits();
     }
-    
-    private void resetAnimation() {
+     
+   private void resetAnimation() {
         if (repeat++ > 50) {
             repeat = 0;
             //y++;
-            if(image.equals(bird_lr.getImage()))
-                bird_lr.getImage().flush();
-            else bird_rl.getImage().flush();
+            if(image.equals(lr.getImage()))
+                lr.getImage().flush();
+            else rl.getImage().flush();
         }
     }
     
     private void changeImage() {
         if(speed_x > 0) {
-            image = bird_lr.getImage();
+            if (alive) image = lr.getImage();
+            else image = dlr.getImage();
         }else {
-            image = bird_rl.getImage();
+            if (alive) image = rl.getImage();
+            else image = drl.getImage();
         }
     }
     
@@ -143,5 +156,4 @@ public class Bird {
     public void setImage(Image image) {
         this.image = image;
     }
-    
 }
