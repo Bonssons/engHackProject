@@ -104,7 +104,7 @@ public class Contents extends JPanel implements ActionListener {
         }
         
         if(e.getKeyCode() == KeyEvent.VK_UP) {
-            
+            ston.fire();
         }
     }
     
