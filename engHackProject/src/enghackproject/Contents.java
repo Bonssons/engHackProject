@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,6 +23,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
+//import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -42,14 +45,27 @@ public class Contents extends JPanel implements ActionListener {
     private String printer;
     private int score;
     private int chances;
-
+    
+    private int second;
+    java.util.Timer time;
+    
     Random random = new Random();
     ArrayList<Bird> toBeBorn;
     JLabel jlabel;
     JLabel jlabel2;
-    
+    Toolkit toolkit;
+    boolean timeStop;
     Image imag;
     private ImageIcon background = new ImageIcon(this.getClass().getResource("background.png"));
+
+    class RemindTask extends TimerTask{
+
+        @Override
+        public void run() {
+            second++;
+        
+        }
+    }
     
     public Contents() {
         super.setDoubleBuffered(true);
@@ -70,7 +86,10 @@ public class Contents extends JPanel implements ActionListener {
         jlabel2.setLocation(300, 300); 
         wall1 = new Wall(-10,-10);
         wall2 = new Wall(-10,-10);
-       
+        second=0;
+        timeStop = false;
+        time = new java.util.Timer();
+        time.schedule(new RemindTask(), 0, 1000);
         birds = new ArrayList<>();
         toBeBorn = new ArrayList<>();
         birdsKilled = 0;
@@ -84,6 +103,7 @@ public class Contents extends JPanel implements ActionListener {
         timer = new Timer(10,this);
         timer.start();
     }
+    
     
     @Override
     public void paintComponent(Graphics g){
@@ -107,7 +127,7 @@ public class Contents extends JPanel implements ActionListener {
             wall2.draw(this,g2d);
         }
         
-        printOnDisplay(jlabel2,"Score: " + ((Integer)score).toString() + ", Wall Hits: " + (3 - chances));
+        printOnDisplay(jlabel2,"Score: " + ((Integer)score).toString() + ", Wall Hits: " + (3 - chances) + ", time:" + (60 - second));
         if(!printer.isEmpty()) {
             printOnDisplay(jlabel, printer);
         }else{
@@ -116,6 +136,9 @@ public class Contents extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        
+        
         ArrayList<Bullet> bullets = slingshot.getBullets();
         ArrayList<Bullet> toRemove = new ArrayList<>();
         for(Bullet bullet: bullets){
@@ -146,13 +169,14 @@ public class Contents extends JPanel implements ActionListener {
             wall2.move(Bird.getGeneralSpeed() - 1);
         }
         
-        if(chances >= 3){
+        if(chances >= 3 || second > 60){
             level = 10;
             birdsKilled = birdsToKill;
         }
         
         if (birdsKilled == birdsToKill && !levelComplete) {
             levelComplete = true;
+            timeStop = true;
             birds.clear();
             bullets.clear();
             printer = "Level " + this.level + ": Complete. Press N to next level.";
@@ -162,6 +186,10 @@ public class Contents extends JPanel implements ActionListener {
                 printer = "GAME OVER. Press R to restart.";
             }
         }
+        
+        if (second > 60) second = 60;
+        if(timeStop) second = 0;
+        
         repaint();
     }
     
@@ -264,8 +292,10 @@ public class Contents extends JPanel implements ActionListener {
         toBeBorn = new ArrayList<>();
         birdsKilled = 0;
         chances = 0;
+        timeStop = false;
         Bird.resetBirdSpeed();
         levelComplete = false;
+        second = 0;
         int i;
         for(i = 0; i < birdsToKill/2; i++){
             birds.add(new Bird(random.nextInt(400),random.nextInt(300)));
@@ -287,6 +317,7 @@ public class Contents extends JPanel implements ActionListener {
                     if(compare(bird_x,bird_y,bullet_x,bullet_y,25,25)){
                         score++;
                         bird.die();
+                        second -= 2;
                         if(birdsKilled++ < birdsToKill/2){
                             toBeBorn.add(new Bird(0,random.nextInt(300)));
                         }
