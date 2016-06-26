@@ -5,6 +5,8 @@
  */
 package enghackproject;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -13,9 +15,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -23,10 +28,13 @@ import javax.swing.Timer;
  */
 public class Contents extends JPanel implements ActionListener {
 
+    private ArrayBlockingQueue<Integer> queue;
     private ArrayList<Bird> birds;
     private Gun slingshot;
     private Timer timer;
+    private int birdsKilled;
     Random random = new Random();
+    ArrayList<Bird> toBeBorn;
 
     Image imag;
     private Image stone;
@@ -39,15 +47,17 @@ public class Contents extends JPanel implements ActionListener {
         requestFocusInWindow();
         
         birds = new ArrayList<>();
+        toBeBorn = new ArrayList<>();
+        birdsKilled = 0;
         int i;
-        for(i = 0; i < random.nextInt(10)+2; i++){
+        for(i = 0; i < 5; i++){
             birds.add(new Bird(random.nextInt(400),random.nextInt(300)));
         }
         slingshot = new Gun(250,360);
+        
+        queue = new ArrayBlockingQueue<>(100);
         timer = new Timer(10,this);
         timer.start();
-        
-        timer.start();   
     }
     
     @Override
@@ -85,46 +95,81 @@ public class Contents extends JPanel implements ActionListener {
             bird.move();
         }
         slingshot.move();
-        
+        slingshot.fireCheck();
+        manageKeys();
         collision();
         bullets.removeAll(toRemove);
         toRemove.clear();
+        birds.addAll(toBeBorn);
+        toBeBorn.clear();
+        
+        if (birdsKilled == 10) {
+            birds.clear();
+            bullets.clear();
+            JLabel jlabel = new JLabel("YOU WIN!");
+            jlabel.setFont(new Font("Verdana",1,20));
+            this.add(jlabel);
+            this.setBorder(new LineBorder(Color.BLACK)); // make it easy to see
+       }
         repaint();
     }
+    
+    public void manageKeys() {
+        if(queue.peek() != null){
+            int key = queue.poll();
+        
+            switch(key){
+                case KeyEvent.VK_SPACE:
+                    slingshot.increaseBulletSpeed();
+                    break;
+                case KeyEvent.VK_LEFT:
+                    slingshot.updateDirection(KeyEvent.VK_LEFT);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    slingshot.updateDirection(KeyEvent.VK_RIGHT);
+                    break;
+                case -KeyEvent.VK_SPACE:
+                    if(!slingshot.isFiring()){
+                        slingshot.fire();
+                        slingshot.resetBulletSpeed();
+                    }
+                    break;
+                case -KeyEvent.VK_LEFT:
+                    slingshot.updateDirection(0);
+                    break;
+                case -KeyEvent.VK_RIGHT:
+                    slingshot.updateDirection(0);
+                    break;
+            }
+        }
+    }
 
-        public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
             
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if(!slingshot.isFiring()){
-                slingshot.fire();
-                slingshot.setFiring(true);
-            }
-            slingshot.FireCount();
+            queue.add(KeyEvent.VK_SPACE);
         }
         
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-            slingshot.updateDirection(KeyEvent.VK_LEFT);
+            queue.add(KeyEvent.VK_LEFT);
         }
         
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            slingshot.updateDirection(KeyEvent.VK_RIGHT);
+            queue.add(KeyEvent.VK_RIGHT);
         }
     }
     
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if(slingshot.isFiring()){
-                slingshot.stop_firing();
-                slingshot.setFiring(false);
-            }
+            queue.add(-KeyEvent.VK_SPACE);
         }
         
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-            slingshot.updateDirection(0);
+            queue.add(-KeyEvent.VK_LEFT);
         }
         
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            slingshot.updateDirection(0);
+            queue.add(-KeyEvent.VK_RIGHT);
         }
     }
     
@@ -140,6 +185,9 @@ public class Contents extends JPanel implements ActionListener {
                 
                     if(compare(bird_x,bird_y,bullet_x,bullet_y)){
                         bird.die();
+                        if(birdsKilled++ < 5){
+                            toBeBorn.add(new Bird(0,random.nextInt(300)));
+                        }
                         bullet.visible = false;
                     }
                 }

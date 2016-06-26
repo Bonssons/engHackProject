@@ -15,13 +15,15 @@ public class Bullet {
     int x,y;
     Image img;
     boolean visible = true;
+    private int general_speed;
     
-    public Bullet(int startX, int startY){
+    public Bullet(int startX, int startY, int general_speed){
         x=startX;
         y=startY;
         ImageIcon newBullet = new ImageIcon("bullet2.png");
         img = newBullet.getImage();
         visible = true;
+        this.general_speed = general_speed;
     }
     public void draw(JPanel jpanel, Graphics2D g2d){
         g2d.drawImage(img,x,y,jpanel);
@@ -39,7 +41,7 @@ public class Bullet {
         return img;
     }
     public void move(){
-        y=y-2;
+        y=y-general_speed;
         if(x>500 || y < 0)
             visible=false;
     }

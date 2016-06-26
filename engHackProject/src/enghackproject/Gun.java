@@ -16,7 +16,8 @@ import java.util.ArrayList;
  * @author Rafael
  */
 public class Gun {
-    private int general_speed = 3;
+    private int general_speed;
+    private int bullet_speed;
     private int x, y, speed_x, speed_y;
     private ArrayList<Bullet> bullets;
     private boolean firing;
@@ -35,21 +36,25 @@ public class Gun {
         bullets = new ArrayList<>();
         firing = false;
         fireCount = 0;
+        general_speed = 3;
+        bullet_speed = 2;
     }
     
     public void stop_firing() {
         image = icon_still.getImage();
         fireCount = 0;
+        firing = false;
     }
     
-    public void FireCount() {
-        if (!(fireCount++ < 2)){
+    public void fireCheck() {
+        if (!(fireCount++ < 25)){
             stop_firing();
         }
     }
     
     public void fire() {
-        Bullet b = new Bullet((x+3),(y-5));
+        firing = true;
+        Bullet b = new Bullet((x+3),(y-5), bullet_speed);
         bullets.add(b);
         image = icon_fire.getImage();
     }
@@ -174,5 +179,13 @@ public class Gun {
     
     public void removeBullet(Bullet bullet){
         if(bullets.contains(bullet)) bullets.remove(bullet);
+    }
+    
+    public void increaseBulletSpeed(){
+        if (bullet_speed++ > 10) bullet_speed = 10;
+    }
+    
+    public void resetBulletSpeed(){
+        bullet_speed = 2;
     }
 }

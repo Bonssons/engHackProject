@@ -14,7 +14,9 @@ import javax.swing.JPanel;
  *
  * @author Rafael
  */
+
 public class Bird {
+    private static int general_speed = 1;
     private boolean alive, goingRight;
     private int x, y, speed_x, speed_y, repeat;
     private Image image;
@@ -29,7 +31,7 @@ public class Bird {
         repeat = 0;
         this.x = x;
         this.y = y;
-        speed_x = 1;
+        speed_x = general_speed;
         speed_y = 0;
     }
     
@@ -37,6 +39,7 @@ public class Bird {
         alive = false;
         //speed_x = 0;
         speed_y = 5;
+        general_speed++;
     }
     
     
@@ -82,11 +85,11 @@ public class Bird {
     }
     
     private void limits(){
-        if(x == 0) {
-            speed_x = 1;
+        if(x <= 0) {
+            speed_x = general_speed;
         }
-        else if(x == 650) {
-            speed_x = -1;
+        else if(x >= 650) {
+            speed_x = -general_speed;
         }
 
 //      if(y == 0) {
